@@ -23,4 +23,11 @@ declare module 'ast-stripper' {
         language: any;
         queryFile: string;
     };
+
+    /**
+     * Checks if a language is supported
+     * @param language The language to check
+     * @returns True if the language is supported, false otherwise
+     */
+    export function isLanguageSupported(language: string): boolean;
 } 
