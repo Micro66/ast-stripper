@@ -60,6 +60,7 @@
     "queries",
     "README.md",
     "LICENSE",
-    "src/index.d.ts"
+    "src/index.d.ts",
+    "build"
   ]
 }
