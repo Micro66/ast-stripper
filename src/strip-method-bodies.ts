@@ -38,10 +38,38 @@ async function getLanguageAndQuery(filePath: string): Promise<{ language: any; q
 }
 
 function normalizeFilePath(filePath: string): string {
+  // 处理 file:// 协议
   if (filePath.startsWith('file://')) {
     return fileURLToPath(filePath);
   }
-  return filePath;
+
+  // 处理 Windows 路径（将反斜杠转换为正斜杠）
+  if (filePath.includes('\\')) {
+    filePath = filePath.replace(/\\/g, '/');
+  }
+
+  // 处理相对路径
+  if (!path.isAbsolute(filePath)) {
+    filePath = path.resolve(process.cwd(), filePath);
+  }
+
+  // 处理 Windows 盘符路径（如 C:/path/to/file）
+  if (/^[a-zA-Z]:/.test(filePath)) {
+    filePath = filePath.replace(/^[a-zA-Z]:/, '');
+  }
+
+  // 处理 UNC 路径（如 //server/share/path）
+  if (filePath.startsWith('//')) {
+    filePath = filePath.substring(2);
+  }
+
+  // 确保路径是绝对路径
+  if (!path.isAbsolute(filePath)) {
+    filePath = path.resolve(filePath);
+  }
+
+  // 规范化路径（处理 .. 和 .）
+  return path.normalize(filePath);
 }
 
 export async function stripMethodBodies(filePath: string): Promise<string> {
