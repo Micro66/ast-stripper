@@ -24,7 +24,7 @@ declare module 'ast-stripper' {
     /**
      * Checks if a file's language is supported
      * @param filePath Path to the source file
-     * @returns True if the file's language is supported, false otherwise
+     * @returns Promise that resolves to true if the file's language is supported, false otherwise
      */
-    export function isLanguageSupported(filePath: string): boolean;
+    export function isLanguageSupported(filePath: string): Promise<boolean>;
 } 
