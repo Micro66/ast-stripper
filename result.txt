@@ -1,0 +1,49 @@
+src/test/Test.java
+  pattern: 18
+    capture: 10 - punctuation.terminator, start: (0, 12), end: (0, 13), text: `;`
+  pattern: 1
+    capture: 0 - namespace, start: (2, 7), end: (2, 21), text: `java.util.List`
+  pattern: 18
+    capture: 10 - punctuation.terminator, start: (2, 21), end: (2, 22), text: `;`
+  pattern: 2
+    capture: 1 - type, start: (4, 13), end: (4, 17), text: `Test`
+  pattern: 14
+    capture: 8 - punctuation.brace, start: (4, 18), end: (4, 19), text: `{`
+  pattern: 6
+    capture: 2 - variable.member, start: (5, 19), end: (5, 23), text: `name`
+  pattern: 18
+    capture: 10 - punctuation.terminator, start: (5, 23), end: (5, 24), text: `;`
+  pattern: 6
+    capture: 2 - variable.member, start: (6, 25), end: (6, 29), text: `list`
+  pattern: 18
+    capture: 10 - punctuation.terminator, start: (6, 29), end: (6, 30), text: `;`
+  pattern: 7
+    capture: 3 - function.method, start: (8, 16), end: (8, 23), text: `setName`
+    capture: 4 - parameters, start: (8, 23), end: (8, 36), text: `(String name)`
+  pattern: 12
+    capture: 7 - punctuation.paren, start: (8, 23), end: (8, 24), text: `(`
+  pattern: 13
+    capture: 7 - punctuation.paren, start: (8, 35), end: (8, 36), text: `)`
+  pattern: 14
+    capture: 8 - punctuation.brace, start: (8, 37), end: (8, 38), text: `{`
+  pattern: 22
+    capture: 13 - property, start: (9, 13), end: (9, 17), text: `name`
+  pattern: 18
+    capture: 10 - punctuation.terminator, start: (9, 24), end: (9, 25), text: `;`
+  pattern: 15
+    capture: 8 - punctuation.brace, start: (10, 4), end: (10, 5), text: `}`
+  pattern: 7
+    capture: 3 - function.method, start: (12, 18), end: (12, 25), text: `getName`
+    capture: 4 - parameters, start: (12, 25), end: (12, 27), text: `()`
+  pattern: 12
+    capture: 7 - punctuation.paren, start: (12, 25), end: (12, 26), text: `(`
+  pattern: 13
+    capture: 7 - punctuation.paren, start: (12, 26), end: (12, 27), text: `)`
+  pattern: 14
+    capture: 8 - punctuation.brace, start: (12, 28), end: (12, 29), text: `{`
+  pattern: 18
+    capture: 10 - punctuation.terminator, start: (13, 19), end: (13, 20), text: `;`
+  pattern: 15
+    capture: 8 - punctuation.brace, start: (14, 4), end: (14, 5), text: `}`
+  pattern: 15
+    capture: 8 - punctuation.brace, start: (15, 0), end: (15, 1), text: `}`
