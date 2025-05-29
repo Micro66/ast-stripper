@@ -16,6 +16,19 @@ const Ruby = require('tree-sitter-ruby');
 const fs = require('fs');
 const path = require('path');
 
+// 缓存Parser实例
+const parserCache = new Map();
+
+// 初始化Parser
+function initializeParser(language) {
+    if (!parserCache.has(language)) {
+        const parser = new Parser();
+        parser.setLanguage(language);
+        parserCache.set(language, parser);
+    }
+    return parserCache.get(language);
+}
+
 // 根据文件扩展名选择语言和 query 文件
 function getLanguageAndQuery(filePath) {
     const ext = path.extname(filePath);
@@ -59,16 +72,16 @@ function getLanguageAndQuery(filePath) {
 
 function stripMethodBodies(filePath) {
     const { language, queryFile } = getLanguageAndQuery(filePath);
-    const parser = new Parser();
-    parser.setLanguage(language);
-
-    const query = fs.readFileSync(path.join(__dirname, 'queries', queryFile), 'utf8');
+    const parser = initializeParser(language);
+    
+    // 每次都重新读取查询文件
+    const queryContent = fs.readFileSync(path.join(__dirname, 'queries', queryFile), 'utf8');
     let languageQuery;
     try {
-        languageQuery = new Parser.Query(language, query);
+        languageQuery = new Parser.Query(language, queryContent);
     } catch (e) {
         console.error('Query parse error:', e);
-        console.error('Query content was:\n', query);
+        console.error('Query content was:\n', queryContent);
         throw e;
     }
 
@@ -127,4 +140,4 @@ if (require.main === module) {
     }
     const strippedCode = stripMethodBodies(filePath);
     console.log(strippedCode);
-} 
+}
