@@ -112,9 +112,8 @@ async function _processCodeContent(content: string, language: any, queryFile: st
   return result;
 }
 
-export async function isLanguageSupported(filePath: string): Promise<boolean> {
-  const normalizedPath = normalizeFilePath(filePath);
-  const ext = path.extname(normalizedPath);
+export function isLanguageSupported(filePath: string): boolean {
+  const ext = path.extname(filePath);
   return !!languageWasmMap[ext];
 }
 

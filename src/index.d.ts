@@ -4,7 +4,7 @@ declare module 'ast-stripper' {
      * @param filePath Path to the source file
      * @returns The source code with method bodies stripped
      */
-    export function stripMethodBodies(filePath: string): Promise<string>;
+    export async function stripMethodBodies(filePath: string): Promise<string>;
 
     /**
      * Strips method bodies from source code content
@@ -12,7 +12,7 @@ declare module 'ast-stripper' {
      * @param fileName The name of the file (used to determine the language)
      * @returns The source code with method bodies stripped
      */
-    export function stripMethodBodiesFromContent(content: string, fileName: string): Promise<string>;
+    export async function stripMethodBodiesFromContent(content: string, fileName: string): Promise<string>;
 
     /**
      * Gets the language and query file for a given file path
