@@ -81,7 +81,29 @@ function stripMethodBodies(filePath) {
     for (const match of matches) {
         for (const capture of match.captures) {
             if (capture.name === 'method.body') {
-                bodies.push(capture.node);
+                // 对于 JavaScript/TypeScript，检查父节点是否是函数/方法相关的节点
+                if (language === JavaScript || language === TypeScript || language === TSX) {
+                    const parent = capture.node.parent;
+                    if (parent && (
+                        parent.type === 'function_declaration' ||
+                        parent.type === 'method_definition' ||
+                        parent.type === 'arrow_function' ||
+                        parent.type === 'function_expression' ||
+                        (parent.type === 'variable_declarator' && (
+                            parent.value?.type === 'arrow_function' ||
+                            parent.value?.type === 'function_expression'
+                        )) ||
+                        (parent.type === 'pair' && (
+                            parent.value?.type === 'arrow_function' ||
+                            parent.value?.type === 'function_expression'
+                        ))
+                    )) {
+                        bodies.push(capture.node);
+                    }
+                } else {
+                    // 对于其他语言，直接添加
+                    bodies.push(capture.node);
+                }
             }
         }
     }
