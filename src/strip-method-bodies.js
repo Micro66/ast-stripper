@@ -140,10 +140,20 @@ function stripMethodBodiesFromContent(content, filenName) {
     return _processCodeContent(content, language, queryFile);
 }
 
+function isLanguageSupported(filePath) {
+    try {
+      getLanguageAndQuery(filePath);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
 module.exports = {
     stripMethodBodies,
     stripMethodBodiesFromContent,
-    getLanguageAndQuery
+    getLanguageAndQuery,
+    isLanguageSupported
 };
 
 if (require.main === module) {
