@@ -1,4 +1,4 @@
-const { stripMethodBodies, getLanguageAndQuery } = require('./strip-method-bodies');
+const { stripMethodBodies, getLanguageAndQuery, stripMethodBodiesFromContent } = require('./strip-method-bodies');
 
 function isLanguageSupported(filePath) {
   try {
@@ -10,6 +10,7 @@ function isLanguageSupported(filePath) {
 }
 
 module.exports = {
-  stripMethodBodies,
-  isLanguageSupported
+    stripMethodBodies,
+    stripMethodBodiesFromContent,
+    isLanguageSupported
 };

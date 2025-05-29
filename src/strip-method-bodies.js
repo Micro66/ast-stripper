@@ -70,8 +70,8 @@ function getLanguageAndQuery(filePath) {
     }
 }
 
-function stripMethodBodies(filePath) {
-    const { language, queryFile } = getLanguageAndQuery(filePath);
+// 内部函数：处理代码内容的核心逻辑
+function _processCodeContent(content, language, queryFile) {
     const parser = initializeParser(language);
     
     // 每次都重新读取查询文件
@@ -85,8 +85,7 @@ function stripMethodBodies(filePath) {
         throw e;
     }
 
-    const sourceCode = fs.readFileSync(filePath, 'utf8');
-    const tree = parser.parse(sourceCode);
+    const tree = parser.parse(content);
     const matches = languageQuery.matches(tree.rootNode);
 
     // 收集所有 @method.body 捕获到的节点
@@ -123,15 +122,27 @@ function stripMethodBodies(filePath) {
 
     // 按位置从后往前替换
     bodies.sort((a, b) => b.startIndex - a.startIndex);
-    let result = sourceCode;
+    let result = content;
     for (const body of bodies) {
         result = result.slice(0, body.startIndex) + '{}' + result.slice(body.endIndex);
     }
     return result;
 }
 
+function stripMethodBodies(filePath) {
+    const { language, queryFile } = getLanguageAndQuery(filePath);
+    const sourceCode = fs.readFileSync(filePath, 'utf8');
+    return _processCodeContent(sourceCode, language, queryFile);
+}
+
+function stripMethodBodiesFromContent(content, extension) {
+    const { language, queryFile } = getLanguageAndQuery(extension);
+    return _processCodeContent(content, language, queryFile);
+}
+
 module.exports = {
     stripMethodBodies,
+    stripMethodBodiesFromContent,
     getLanguageAndQuery
 };
 
