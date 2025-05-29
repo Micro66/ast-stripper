@@ -15,7 +15,8 @@
     "postversion": "git push && git push --tags",
     "release:patch": "npm version patch && npm publish",
     "release:minor": "npm version minor && npm publish",
-    "release:major": "npm version major && npm publish"
+    "release:major": "npm version major && npm publish",
+    "postinstall": "node -e \"try { require('tree-sitter-java'); require('tree-sitter-go'); require('tree-sitter-python'); require('tree-sitter-php'); require('tree-sitter-cpp'); require('tree-sitter-javascript'); require('tree-sitter-typescript'); require('tree-sitter-c'); require('tree-sitter-c-sharp'); require('tree-sitter-rust'); require('tree-sitter-kotlin'); require('tree-sitter-swift'); require('tree-sitter-ruby'); } catch(e) { console.error('Error loading tree-sitter languages:', e); process.exit(1); }\""
   },
   "keywords": [
     "tree-sitter",
@@ -60,7 +61,6 @@
     "queries",
     "README.md",
     "LICENSE",
-    "src/index.d.ts",
-    "build"
+    "src/index.d.ts"
   ]
 }
