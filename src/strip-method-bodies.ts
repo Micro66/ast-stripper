@@ -2,6 +2,7 @@
 import Parser from 'web-tree-sitter';
 import * as fs from 'fs';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
 
 const WASM_DIR = path.resolve(__dirname, '../wasm-languages');
 
@@ -36,18 +37,27 @@ async function getLanguageAndQuery(filePath: string): Promise<{ language: any; q
   return { language, queryFile: entry.query };
 }
 
+function normalizeFilePath(filePath: string): string {
+  if (filePath.startsWith('file://')) {
+    return fileURLToPath(filePath);
+  }
+  return filePath;
+}
+
 export async function stripMethodBodies(filePath: string): Promise<string> {
   await Parser.init();
-  const { language, queryFile } = await getLanguageAndQuery(filePath);
+  const normalizedPath = normalizeFilePath(filePath);
+  const { language, queryFile } = await getLanguageAndQuery(normalizedPath);
   const parser = new Parser();
   parser.setLanguage(language);
-  const sourceCode = fs.readFileSync(filePath, 'utf8');
+  const sourceCode = fs.readFileSync(normalizedPath, 'utf8');
   return _processCodeContent(sourceCode, language, queryFile, parser);
 }
 
 export async function stripMethodBodiesFromContent(content: string, fileName: string): Promise<string> {
   await Parser.init();
-  const { language, queryFile } = await getLanguageAndQuery(fileName);
+  const normalizedPath = normalizeFilePath(fileName);
+  const { language, queryFile } = await getLanguageAndQuery(normalizedPath);
   const parser = new Parser();
   parser.setLanguage(language);
   return _processCodeContent(content, language, queryFile, parser);
