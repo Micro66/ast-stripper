@@ -130,7 +130,10 @@ function stripMethodBodies(filePath) {
     return result;
 }
 
-module.exports = { stripMethodBodies };
+module.exports = {
+    stripMethodBodies,
+    getLanguageAndQuery
+};
 
 if (require.main === module) {
     const filePath = process.argv[2];
