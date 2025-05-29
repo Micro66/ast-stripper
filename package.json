@@ -1,6 +1,6 @@
 {
-  "name": "tree-setter-scm",
-  "version": "1.0.0",
+  "name": "@yudexiaozhou/ast-stripper",
+  "version": "1.0.1",
   "description": "A tool to strip method bodies from source code files using tree-sitter",
   "main": "src/index.js",
   "bin": {
@@ -9,7 +9,12 @@
   "scripts": {
     "start": "node src/index.js",
     "test": "node test.js",
-    "prepublishOnly": "npm test || true"
+    "prepublishOnly": "npm test || true",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags",
+    "release:patch": "npm version patch && npm publish",
+    "release:minor": "npm version minor && npm publish",
+    "release:major": "npm version major && npm publish"
   },
   "keywords": [
     "tree-sitter",
