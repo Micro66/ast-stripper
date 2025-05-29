@@ -28,12 +28,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/tree-setter-scm.git"
+    "url": "https://github.com/Micro66/ast-stripper"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/tree-setter-scm/issues"
+    "url": "https://github.com/Micro66/ast-stripper/issues"
   },
-  "homepage": "https://github.com/yourusername/tree-setter-scm#readme",
+  "homepage": "https://github.com/Micro66/ast-stripper#readme",
   "dependencies": {
     "commander": "^11.1.0",
     "tree-sitter": "^0.20.6",
