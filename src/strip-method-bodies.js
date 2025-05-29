@@ -135,8 +135,8 @@ function stripMethodBodies(filePath) {
     return _processCodeContent(sourceCode, language, queryFile);
 }
 
-function stripMethodBodiesFromContent(content, extension) {
-    const { language, queryFile } = getLanguageAndQuery(extension);
+function stripMethodBodiesFromContent(content, filenName) {
+    const { language, queryFile } = getLanguageAndQuery(filenName);
     return _processCodeContent(content, language, queryFile);
 }
 
