@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { stripMethodBodies } = require('./dist');
+const { stripMethodBodies, stripMethodBodiesFromContent } = require('./dist');
 
 // Create test directory if it doesn't exist
 const testDir = path.join(__dirname, 'test-files');
@@ -46,48 +46,43 @@ const arrow = () => {}`,
     }
 ];
 
-// Run tests
-let passed = 0;
-let failed = 0;
+async function runTests() {
+    let passed = 0;
+    let failed = 0;
 
-for (const test of testCases) {
-    console.log(`\nRunning test: ${test.name}`);
-    
-    // Write test file
-    const filePath = path.join(testDir, test.file);
-    fs.writeFileSync(filePath, test.input);
-    
-    try {
-        const result = stripMethodBodies(filePath);
-        const normalizedResult = result.replace(/\s+/g, ' ').trim();
-        const normalizedExpected = test.expected.replace(/\s+/g, ' ').trim();
-        
-        if (normalizedResult === normalizedExpected) {
-            console.log('✅ Test passed');
-            passed++;
-        } else {
-            console.log('❌ Test failed');
-            console.log('Expected:', normalizedExpected);
-            console.log('Got:', normalizedResult);
+    for (const test of testCases) {
+        console.log(`\nRunning test: ${test.name}`);
+        // Write test file
+        const filePath = path.join(testDir, test.file);
+        fs.writeFileSync(filePath, test.input);
+        try {
+            const result = await stripMethodBodies(filePath);
+            const normalizedResult = result.replace(/\s+/g, ' ').trim();
+            const normalizedExpected = test.expected.replace(/\s+/g, ' ').trim();
+            if (normalizedResult === normalizedExpected) {
+                console.log('✅ Test passed');
+                passed++;
+            } else {
+                console.log('❌ Test failed');
+                console.log('Expected:', normalizedExpected);
+                console.log('Got:', normalizedResult);
+                failed++;
+            }
+        } catch (error) {
+            console.log('❌ Test failed with error:', error.message);
             failed++;
         }
-    } catch (error) {
-        console.log('❌ Test failed with error:', error.message);
-        failed++;
+        // Clean up test file
+        fs.unlinkSync(filePath);
     }
-    
-    // Clean up test file
-    fs.unlinkSync(filePath);
+    // Clean up test directory
+    fs.rmdirSync(testDir);
+    // Print summary
+    console.log('\nTest Summary:');
+    console.log(`Passed: ${passed}`);
+    console.log(`Failed: ${failed}`);
+    console.log(`Total: ${testCases.length}`);
+    process.exit(failed > 0 ? 1 : 0);
 }
 
-// Clean up test directory
-fs.rmdirSync(testDir);
-
-// Print summary
-console.log('\nTest Summary:');
-console.log(`Passed: ${passed}`);
-console.log(`Failed: ${failed}`);
-console.log(`Total: ${testCases.length}`);
-
-// Exit with appropriate code
-process.exit(failed > 0 ? 1 : 0); 
+runTests().catch(e => { console.error(e); process.exit(1); }); 

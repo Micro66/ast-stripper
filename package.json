@@ -3,6 +3,9 @@
   "version": "1.0.20",
   "description": "Strip method bodies from source code files",
   "main": "dist/index.js",
+  "bin": {
+    "ast-stripper": "dist/index.js"
+  },
   "types": "dist/index.d.ts",
   "files": [
     "dist/**",
@@ -20,7 +23,7 @@
     "build": "tsc",
     "clean": "rm -rf dist",
     "prepare": "npm run build",
-    "postinstall": "node -e \"try { require('tree-sitter-java'); require('tree-sitter-go'); require('tree-sitter-python'); require('tree-sitter-php'); require('tree-sitter-cpp'); require('tree-sitter-javascript'); require('tree-sitter-typescript'); require('tree-sitter-c'); require('tree-sitter-c-sharp'); require('tree-sitter-rust'); require('tree-sitter-kotlin'); require('tree-sitter-swift'); require('tree-sitter-ruby'); } catch(e) { console.error('Error loading tree-sitter languages:', e); process.exit(1); }\""
+    "download-wasms": "node scripts/download-wasms.js"
   },
   "keywords": [
     "ast",
@@ -33,20 +36,7 @@
   "author": "Hongyu",
   "license": "MIT",
   "dependencies": {
-    "tree-sitter": "^0.20.6",
-    "tree-sitter-c": "^0.20.6",
-    "tree-sitter-c-sharp": "^0.20.0",
-    "tree-sitter-cpp": "^0.20.2",
-    "tree-sitter-go": "^0.20.0",
-    "tree-sitter-java": "^0.20.2",
-    "tree-sitter-javascript": "^0.20.2",
-    "tree-sitter-kotlin": "^0.3.1",
-    "tree-sitter-php": "^0.20.0",
-    "tree-sitter-python": "^0.20.4",
-    "tree-sitter-ruby": "^0.20.0",
-    "tree-sitter-rust": "^0.20.4",
-    "tree-sitter-swift": "^0.3.6",
-    "tree-sitter-typescript": "^0.20.3"
+    "web-tree-sitter": "^0.20.8"
   },
   "devDependencies": {
     "@types/node": "^20.17.52",
