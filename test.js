@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { stripMethodBodies } = require('./src/strip-method-bodies');
+const { stripMethodBodies } = require('./dist');
 
 // Create test directory if it doesn't exist
 const testDir = path.join(__dirname, 'test-files');
