@@ -1,26 +1,38 @@
-const Parser = require('tree-sitter');
-const Java = require('tree-sitter-java');
-const Go = require('tree-sitter-go');
-const Python = require('tree-sitter-python');
-const PHP = require('tree-sitter-php');
-const Cpp = require('tree-sitter-cpp');
-const JavaScript = require('tree-sitter-javascript');
-const TypeScript = require('tree-sitter-typescript').typescript;
-const TSX = require('tree-sitter-typescript').tsx;
-const C = require('tree-sitter-c');
-const CSharp = require('tree-sitter-c-sharp');
-const Rust = require('tree-sitter-rust');
-const Kotlin = require('tree-sitter-kotlin');
-const Swift = require('tree-sitter-swift');
-const Ruby = require('tree-sitter-ruby');
-const fs = require('fs');
-const path = require('path');
+import Parser = require('tree-sitter');
+// @ts-ignore
+import Java = require('tree-sitter-java');
+// @ts-ignore
+import Go = require('tree-sitter-go');
+// @ts-ignore
+import Python = require('tree-sitter-python');
+// @ts-ignore
+import PHP = require('tree-sitter-php');
+// @ts-ignore
+import Cpp = require('tree-sitter-cpp');
+// @ts-ignore
+import JavaScript = require('tree-sitter-javascript');
+// @ts-ignore
+import { typescript as TypeScript, tsx as TSX } from 'tree-sitter-typescript';
+// @ts-ignore
+import C = require('tree-sitter-c');
+// @ts-ignore
+import CSharp = require('tree-sitter-c-sharp');
+// @ts-ignore
+import Rust = require('tree-sitter-rust');
+// @ts-ignore
+import Kotlin = require('tree-sitter-kotlin');
+// @ts-ignore
+import Swift = require('tree-sitter-swift');
+// @ts-ignore
+import Ruby = require('tree-sitter-ruby');
+import * as fs from 'fs';
+import * as path from 'path';
 
 // 缓存Parser实例
-const parserCache = new Map();
+const parserCache = new Map<any, any>();
 
 // 初始化Parser
-function initializeParser(language) {
+function initializeParser(language: any): any {
     if (!parserCache.has(language)) {
         const parser = new Parser();
         parser.setLanguage(language);
@@ -30,7 +42,7 @@ function initializeParser(language) {
 }
 
 // 根据文件扩展名选择语言和 query 文件
-function getLanguageAndQuery(filePath) {
+export function getLanguageAndQuery(filePath: string): { language: any; queryFile: string } {
     const ext = path.extname(filePath);
     switch (ext) {
         case '.java':
@@ -71,12 +83,12 @@ function getLanguageAndQuery(filePath) {
 }
 
 // 内部函数：处理代码内容的核心逻辑
-function _processCodeContent(content, language, queryFile) {
+function _processCodeContent(content: string, language: any, queryFile: string): string {
     const parser = initializeParser(language);
     
     // 每次都重新读取查询文件
-    const queryContent = fs.readFileSync(path.join(__dirname, 'queries', queryFile), 'utf8');
-    let languageQuery;
+    const queryContent = fs.readFileSync(path.resolve(__dirname, '../src/queries', queryFile), 'utf8');
+    let languageQuery: any;
     try {
         languageQuery = new Parser.Query(language, queryContent);
     } catch (e) {
@@ -89,7 +101,7 @@ function _processCodeContent(content, language, queryFile) {
     const matches = languageQuery.matches(tree.rootNode);
 
     // 收集所有 @method.body 捕获到的节点
-    const bodies = [];
+    const bodies: any[] = [];
     for (const match of matches) {
         for (const capture of match.captures) {
             if (capture.name === 'method.body') {
@@ -129,32 +141,25 @@ function _processCodeContent(content, language, queryFile) {
     return result;
 }
 
-function stripMethodBodies(filePath) {
+export function stripMethodBodies(filePath: string): string {
     const { language, queryFile } = getLanguageAndQuery(filePath);
     const sourceCode = fs.readFileSync(filePath, 'utf8');
     return _processCodeContent(sourceCode, language, queryFile);
 }
 
-function stripMethodBodiesFromContent(content, filenName) {
+export function stripMethodBodiesFromContent(content: string, filenName: string): string {
     const { language, queryFile } = getLanguageAndQuery(filenName);
     return _processCodeContent(content, language, queryFile);
 }
 
-function isLanguageSupported(filePath) {
+export function isLanguageSupported(filePath: string): boolean {
     try {
       getLanguageAndQuery(filePath);
       return true;
     } catch (error) {
       return false;
     }
-  }
-
-module.exports = {
-    stripMethodBodies,
-    stripMethodBodiesFromContent,
-    getLanguageAndQuery,
-    isLanguageSupported
-};
+}
 
 if (require.main === module) {
     const filePath = process.argv[2];

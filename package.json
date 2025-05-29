@@ -1,66 +1,63 @@
 {
   "name": "ast-stripper",
   "version": "1.0.17",
-  "description": "A tool to strip method bodies from source code files using tree-sitter",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
-  "bin": {
-    "ast-stripper": "./bin/cli.js"
-  },
+  "description": "Strip method bodies from source code files",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**",
+    "src/queries"
+  ],
   "scripts": {
     "start": "node src/index.js",
     "test": "node test.js",
-    "prepublishOnly": "npm test || true",
-    "version": "git add -A src",
+    "prepublishOnly": "npm run build && npm test || true",
+    "version": "npm run build && git add -A src dist",
     "postversion": "git push && git push --tags",
     "release:patch": "npm version patch && npm publish",
     "release:minor": "npm version minor && npm publish",
     "release:major": "npm version major && npm publish",
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "prepare": "npm run build",
     "postinstall": "node -e \"try { require('tree-sitter-java'); require('tree-sitter-go'); require('tree-sitter-python'); require('tree-sitter-php'); require('tree-sitter-cpp'); require('tree-sitter-javascript'); require('tree-sitter-typescript'); require('tree-sitter-c'); require('tree-sitter-c-sharp'); require('tree-sitter-rust'); require('tree-sitter-kotlin'); require('tree-sitter-swift'); require('tree-sitter-ruby'); } catch(e) { console.error('Error loading tree-sitter languages:', e); process.exit(1); }\""
   },
   "keywords": [
-    "tree-sitter",
-    "code-stripper",
-    "implementation-remover",
-    "method-body-remover",
-    "code-analysis",
-    "ast"
+    "ast",
+    "method",
+    "body",
+    "strip",
+    "remove",
+    "tree-sitter"
   ],
-  "author": "",
+  "author": "Hongyu",
   "license": "MIT",
+  "dependencies": {
+    "tree-sitter": "^0.20.6",
+    "tree-sitter-c": "^0.20.6",
+    "tree-sitter-c-sharp": "^0.20.0",
+    "tree-sitter-cpp": "^0.20.2",
+    "tree-sitter-go": "^0.20.0",
+    "tree-sitter-java": "^0.20.2",
+    "tree-sitter-javascript": "^0.20.2",
+    "tree-sitter-kotlin": "^0.3.1",
+    "tree-sitter-php": "^0.20.0",
+    "tree-sitter-python": "^0.20.4",
+    "tree-sitter-ruby": "^0.20.0",
+    "tree-sitter-rust": "^0.20.4",
+    "tree-sitter-swift": "^0.3.6",
+    "tree-sitter-typescript": "^0.20.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.52",
+    "typescript": "^5.3.3"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Micro66/ast-stripper"
+    "url": "git+https://github.com/hongyu9/ast-stripper.git"
   },
   "bugs": {
-    "url": "https://github.com/Micro66/ast-stripper/issues"
+    "url": "https://github.com/hongyu9/ast-stripper/issues"
   },
-  "homepage": "https://github.com/Micro66/ast-stripper#readme",
-  "dependencies": {
-    "commander": "^11.1.0",
-    "tree-sitter": "^0.20.6",
-    "tree-sitter-java": "^0.20.1",
-    "tree-sitter-go": "^0.20.0",
-    "tree-sitter-python": "^0.20.4",
-    "tree-sitter-php": "^0.20.0",
-    "tree-sitter-cpp": "^0.20.0",
-    "tree-sitter-javascript": "^0.20.1",
-    "tree-sitter-typescript": "^0.20.3",
-    "tree-sitter-c": "^0.20.0",
-    "tree-sitter-c-sharp": "^0.20.0",
-    "tree-sitter-rust": "^0.20.4",
-    "tree-sitter-kotlin": "^0.2.0",
-    "tree-sitter-swift": "^0.3.0",
-    "tree-sitter-ruby": "^0.20.0"
-  },
-  "engines": {
-    "node": ">=14.0.0"
-  },
-  "files": [
-    "src",
-    "queries",
-    "README.md",
-    "LICENSE",
-    "src/index.d.ts"
-  ]
+  "homepage": "https://github.com/hongyu9/ast-stripper#readme"
 }
