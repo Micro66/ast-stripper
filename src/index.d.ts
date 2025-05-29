@@ -4,25 +4,22 @@ declare module 'ast-stripper' {
      * @param filePath Path to the source file
      * @returns The source code with method bodies stripped
      */
-    export function stripMethodBodies(filePath: string): string;
+    export function stripMethodBodies(filePath: string): Promise<string>;
 
     /**
      * Strips method bodies from source code content
      * @param content The source code content
-     * @param fileName The name of the file (used to determine the language)
+     * @param language The language of the file
      * @returns The source code with method bodies stripped
      */
-    export function stripMethodBodiesFromContent(content: string, fileName: string): string;
+    export function stripMethodBodiesFromContent(content: string, language: string): string;
 
     /**
      * Gets the language and query file for a given file path
      * @param filePath Path to the source file
      * @returns Object containing the language and query file
      */
-    export function getLanguageAndQuery(filePath: string): {
-        language: any;
-        queryFile: string;
-    };
+    export function getLanguageAndQuery(filePath: string): { language: string; query: string };
 
     /**
      * Checks if a language is supported

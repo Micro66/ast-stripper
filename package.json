@@ -59,6 +59,7 @@
     "src",
     "queries",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "src/index.d.ts"
   ]
 }
