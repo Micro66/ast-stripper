@@ -1,6 +1,6 @@
 {
   "name": "ast-stripper",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "A tool to strip method bodies from source code files using tree-sitter",
   "main": "src/index.js",
   "types": "src/index.d.ts",
