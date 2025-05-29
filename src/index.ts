@@ -1,5 +1,4 @@
-import { stripMethodBodies, stripMethodBodiesFromContent, getLanguageAndQuery, isLanguageSupported } from './strip-method-bodies';
-
+const { stripMethodBodies, stripMethodBodiesFromContent, getLanguageAndQuery, isLanguageSupported } = require('./dist');
 export {
     stripMethodBodies,
     stripMethodBodiesFromContent,
