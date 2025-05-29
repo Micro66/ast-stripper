@@ -1,4 +1,4 @@
-# Tree Setter
+# AST Stripper
 
 A command-line tool to strip method bodies from source code files using tree-sitter. This tool helps you focus on the structure of your code by removing implementation details.
 
@@ -20,17 +20,17 @@ A command-line tool to strip method bodies from source code files using tree-sit
 ## Installation
 
 ```bash
-npm install -g tree-setter-scm
+npm install -g ast-stripper
 ```
 
 ## Usage
 
 ```bash
 # Process a file and output to stdout
-tree-setter path/to/your/file.java
+ast-stripper path/to/your/file.java
 
 # Process a file and save to a new file
-tree-setter path/to/your/file.java -o stripped.java
+ast-stripper path/to/your/file.java -o stripped.java
 ```
 
 ## Example
@@ -49,7 +49,7 @@ public class Example {
 }
 ```
 
-After running `tree-setter example.java`:
+After running `ast-stripper example.java`:
 ```java
 public class Example {
     public void method1() {}

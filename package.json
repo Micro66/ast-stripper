@@ -1,10 +1,10 @@
 {
-  "name": "@yudexiaozhou/ast-stripper",
+  "name": "ast-stripper",
   "version": "1.0.2",
   "description": "A tool to strip method bodies from source code files using tree-sitter",
   "main": "src/index.js",
   "bin": {
-    "tree-setter": "./src/index.js"
+    "ast-stripper": "./src/index.js"
   },
   "scripts": {
     "start": "node src/index.js",
