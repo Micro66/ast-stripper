@@ -1,6 +1,6 @@
 {
   "name": "ast-stripper",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "description": "Strip method bodies from source code files",
   "main": "dist/index.js",
   "bin": {
