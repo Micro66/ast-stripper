@@ -4,11 +4,20 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
-// Initialize parser at module level
-Parser.init().catch(error => {
-  console.error('Failed to initialize Parser:', error);
-  process.exit(1);
-});
+let parserReady = false;
+
+export async function init() {
+  if (!parserReady) {
+    await Parser.init();
+    parserReady = true;
+  }
+}
+
+function assertInitialized() {
+  if (!parserReady) {
+    throw new Error('web-tree-sitter not initialized. Please call and await init() before using this API.');
+  }
+}
 
 const WASM_DIR = path.resolve(__dirname, '../wasm-languages');
 
@@ -79,6 +88,7 @@ function normalizeFilePath(filePath: string): string {
 }
 
 export async function stripMethodBodies(filePath: string): Promise<string> {
+  assertInitialized();
   const normalizedPath = normalizeFilePath(filePath);
   const { language, queryFile } = await getLanguageAndQuery(normalizedPath);
   const parser = new Parser();
@@ -88,6 +98,7 @@ export async function stripMethodBodies(filePath: string): Promise<string> {
 }
 
 export async function stripMethodBodiesFromContent(content: string, fileName: string): Promise<string> {
+  assertInitialized();
   const normalizedPath = normalizeFilePath(fileName);
   const { language, queryFile } = await getLanguageAndQuery(normalizedPath);
   const parser = new Parser();
