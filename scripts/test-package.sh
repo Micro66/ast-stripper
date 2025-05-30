@@ -25,11 +25,12 @@ npm install ../
 
 # 创建测试文件
 echo -e "${GREEN}创建测试文件...${NC}"
-cat > test.js << 'EOF'
-const { stripMethodBodiesFromContent } = require('ast-stripper');
+cat > test.ts << 'EOF'
+import { init, stripMethodBodiesFromContent } from 'ast-stripper';
 
-// 测试代码
-const code = `
+(async () => {
+  // 测试代码
+  const code = `
 public class Test {
     public void method1() {
         System.out.println("Hello");
@@ -37,20 +38,22 @@ public class Test {
 }
 `;
 
-try {
-    const result = stripMethodBodiesFromContent(code, 'test.java');
+  try {
+    await init();
+    const result = await stripMethodBodiesFromContent(code, 'test.java');
     console.log('测试成功！');
     console.log('处理后的代码:');
     console.log(result);
-} catch (error) {
+  } catch (error) {
     console.error('测试失败:', error);
     process.exit(1);
-}
+  }
+})();
 EOF
 
 # 运行测试
 echo -e "${GREEN}运行测试...${NC}"
-node test.js
+npx ts-node test.ts
 
 # 清理
 echo -e "${GREEN}测试完成，清理临时文件...${NC}"

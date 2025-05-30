@@ -1,11 +1,12 @@
-import { stripMethodBodies, stripMethodBodiesFromContent, isLanguageSupported } from './strip-method-bodies';
+import { stripMethodBodies, stripMethodBodiesFromContent, isLanguageSupported, init } from './strip-method-bodies';
 import * as fs from 'fs';
 import * as path from 'path';
 
 export {
     stripMethodBodies,
     stripMethodBodiesFromContent,
-    isLanguageSupported
+    isLanguageSupported,
+    init
 };
 
 // CLI entry point
