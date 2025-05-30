@@ -58,6 +58,6 @@ npx ts-node test.ts
 # 清理
 echo -e "${GREEN}测试完成，清理临时文件...${NC}"
 cd ..
-rm -rf "$TEST_DIR"
+rm -rf "./$TEST_DIR"
 
 echo -e "${GREEN}测试打包完成！${NC}" 

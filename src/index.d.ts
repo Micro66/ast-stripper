@@ -1,10 +1,15 @@
 declare module 'ast-stripper' {
     /**
+     * Initialize the parser and load all supported languages
+     */
+    export function init(): Promise<void>;
+
+    /**
      * Strips method bodies from a file
      * @param filePath Path to the source file
      * @returns The source code with method bodies stripped
      */
-    export function stripMethodBodies(filePath: string): Promise<string>;
+    export function stripMethodBodies(filePath: string): string;
 
     /**
      * Strips method bodies from source code content
@@ -12,7 +17,7 @@ declare module 'ast-stripper' {
      * @param fileName The name of the file (used to determine the language)
      * @returns The source code with method bodies stripped
      */
-    export function stripMethodBodiesFromContent(content: string, fileName: string): Promise<string>;
+    export function stripMethodBodiesFromContent(content: string, fileName: string): string;
 
     /**
      * Gets the language and query file for a given file path
@@ -24,7 +29,7 @@ declare module 'ast-stripper' {
     /**
      * Checks if a file's language is supported
      * @param filePath Path to the source file
-     * @returns Promise that resolves to true if the file's language is supported, false otherwise
+     * @returns true if the file's language is supported, false otherwise
      */
-    export function isLanguageSupported(filePath: string): Promise<boolean>;
+    export function isLanguageSupported(filePath: string): boolean;
 } 

@@ -1,6 +1,5 @@
-import { stripMethodBodies, stripMethodBodiesFromContent, isLanguageSupported, init } from './strip-method-bodies';
 import * as fs from 'fs';
-import * as path from 'path';
+import { stripMethodBodies, stripMethodBodiesFromContent, isLanguageSupported, init } from './strip-method-bodies';
 
 export {
     stripMethodBodies,
@@ -20,7 +19,8 @@ if (require.main === module) {
     const outputPath = args[1];
     (async () => {
         try {
-            const result = await stripMethodBodies(filePath);
+            await init();
+            const result = stripMethodBodies(filePath);
             if (outputPath) {
                 fs.writeFileSync(outputPath, result);
                 console.log(`Stripped code written to ${outputPath}`);

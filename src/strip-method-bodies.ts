@@ -5,10 +5,20 @@ import * as path from 'path';
 import { fileURLToPath } from 'url';
 
 let parserReady = false;
+const languageCache: Record<string, any> = {};
 
 export async function init() {
   if (!parserReady) {
     await Parser.init();
+    // Preload all supported languages
+    for (const [ext, entry] of Object.entries(languageWasmMap)) {
+      try {
+        const language = await Parser.Language.load(path.join(WASM_DIR, entry.wasm));
+        languageCache[ext] = language;
+      } catch (error) {
+        console.warn(`Failed to load language for ${ext}: ${error}`);
+      }
+    }
     parserReady = true;
   }
 }
@@ -36,7 +46,7 @@ const languageWasmMap: Record<string, { wasm: string, query: string }> = {
   '.ts': { wasm: 'tree-sitter-typescript.wasm', query: 'typescript.scm' },
   '.tsx': { wasm: 'tree-sitter-tsx.wasm', query: 'tsx.scm' },
   '.c': { wasm: 'tree-sitter-c.wasm', query: 'c.scm' },
-  '.cs': { wasm: 'tree-sitter-c-sharp.wasm', query: 'csharp.scm' },
+  '.cs': { wasm: 'tree-sitter-c_sharp.wasm', query: 'csharp.scm' },
   '.rs': { wasm: 'tree-sitter-rust.wasm', query: 'rust.scm' },
   '.kt': { wasm: 'tree-sitter-kotlin.wasm', query: 'kotlin.scm' },
   '.kts': { wasm: 'tree-sitter-kotlin.wasm', query: 'kotlin.scm' },
@@ -44,11 +54,16 @@ const languageWasmMap: Record<string, { wasm: string, query: string }> = {
   '.swift': { wasm: 'tree-sitter-swift.wasm', query: 'swift.scm' }
 };
 
-async function getLanguageAndQuery(filePath: string): Promise<{ language: any; queryFile: string }> {
+function getLanguageAndQuery(filePath: string): { language: any; queryFile: string } {
   const ext = path.extname(filePath);
   const entry = languageWasmMap[ext];
   if (!entry) throw new Error(`Unsupported file extension: ${ext}`);
-  const language = await Parser.Language.load(path.join(WASM_DIR, entry.wasm));
+  
+  const language = languageCache[ext];
+  if (!language) {
+    throw new Error(`Language for ${ext} was not loaded during initialization`);
+  }
+  
   return { language, queryFile: entry.query };
 }
 
@@ -87,26 +102,26 @@ function normalizeFilePath(filePath: string): string {
   return path.normalize(filePath);
 }
 
-export async function stripMethodBodies(filePath: string): Promise<string> {
+export function stripMethodBodies(filePath: string): string {
   assertInitialized();
   const normalizedPath = normalizeFilePath(filePath);
-  const { language, queryFile } = await getLanguageAndQuery(normalizedPath);
+  const { language, queryFile } = getLanguageAndQuery(normalizedPath);
   const parser = new Parser();
   parser.setLanguage(language);
   const sourceCode = fs.readFileSync(normalizedPath, 'utf8');
   return _processCodeContent(sourceCode, language, queryFile, parser);
 }
 
-export async function stripMethodBodiesFromContent(content: string, fileName: string): Promise<string> {
+export function stripMethodBodiesFromContent(content: string, fileName: string): string {
   assertInitialized();
   const normalizedPath = normalizeFilePath(fileName);
-  const { language, queryFile } = await getLanguageAndQuery(normalizedPath);
+  const { language, queryFile } = getLanguageAndQuery(normalizedPath);
   const parser = new Parser();
   parser.setLanguage(language);
   return _processCodeContent(content, language, queryFile, parser);
 }
 
-async function _processCodeContent(content: string, language: any, queryFile: string, parser: any): Promise<string> {
+function _processCodeContent(content: string, language: any, queryFile: string, parser: any): string {
   const tree = parser.parse(content);
   const queryContent = fs.readFileSync(path.resolve(__dirname, '../src/queries', queryFile), 'utf8');
   const query = language.query(queryContent);
@@ -138,7 +153,8 @@ if (require.main === module) {
     console.error('Usage: node strip-method-bodies.js <JavaFile|GoFile|PythonFile|PHPFile>');
     process.exit(1);
   }
-  stripMethodBodies(filePath).then(strippedCode => {
+  init().then(() => {
+    const strippedCode = stripMethodBodies(filePath);
     console.log(strippedCode);
   }).catch(error => {
     console.error('Error:', error);
