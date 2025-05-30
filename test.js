@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { stripMethodBodies, stripMethodBodiesFromContent } = require('./dist');
+const { stripMethodBodies, stripMethodBodiesFromContent, init } = require('./dist');
 
 // Create test directory if it doesn't exist
 const testDir = path.join(__dirname, 'test-files');
@@ -47,6 +47,7 @@ const arrow = () => {}`,
 ];
 
 async function runTests() {
+    await init();
     let passed = 0;
     let failed = 0;
 
