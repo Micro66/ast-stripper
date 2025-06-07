@@ -87,10 +87,6 @@ function normalizeFilePath(filePath: string): string {
     filePath = path.resolve(process.cwd(), filePath);
   }
 
-  // 处理 Windows 盘符路径（如 C:/path/to/file）
-  if (/^[a-zA-Z]:/.test(filePath)) {
-    filePath = filePath.replace(/^[a-zA-Z]:/, '');
-  }
 
   // 处理 UNC 路径（如 //server/share/path）
   if (filePath.startsWith('//')) {
