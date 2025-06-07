@@ -9,7 +9,11 @@ const languageCache: Record<string, any> = {};
 
 export async function init() {
   if (!parserReady) {
-    await Parser.init();
+    await Parser.init({
+      locateFile(scriptName: string) {
+        return require.resolve(`web-tree-sitter/${scriptName}`);
+      }
+    });
     // Preload all supported languages
     for (const [ext, entry] of Object.entries(languageWasmMap)) {
       try {
