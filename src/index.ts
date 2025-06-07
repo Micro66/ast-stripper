@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import * as fs from 'fs';
 import { stripMethodBodies, stripMethodBodiesFromContent, isLanguageSupported, init } from './strip-method-bodies';
 
